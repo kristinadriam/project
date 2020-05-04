@@ -1,170 +1,134 @@
 import random
 
-# fields
-size = 10
-field1 = []
-field2 = []
+# field
+size = 12
+field = []
+sum = 0
 
 for i in range(size):
-	field1.append([])
+	field.append([])
 	for j in range(size):
-		field1[i].append(0)		
-		
-		
-for i in range(size):
-	field2.append([])
-	for j in range(size):
-		field2[i].append([0, 0])		
+		field[i].append(0)		
 
 # function
-def ship_one():
-	field1[a].pop(b)
-	field1[a].insert(b,1)	
-	return
+def ship_one(x,y):
+	field[x].pop(y)
+	field[x].insert(y,1)	
 	
-def ship_two(x,y):
-	ship_one()
-	field1[a+x].pop(b+y)
-	field1[a+x].insert(b+y,1)
-	return 	
+def ship_two(x,y,c,d):
+	ship_one(x,y)
+	ship_one(x+c,y+d)	
 	
-def ship_three(x,y):
-	for i in range(0,3):
-		field1[a+x*i].pop(b+y*i)
-		field1[a+x*i].insert(b+y*i,1)	 	
+def ship_three(x,y,c,d):
+	ship_two(x,y,c,d)
+	ship_one(x+2*c,y+2*d) 
+	
+def ship_four(x,y,c,d):
+	ship_three(x,y,c,d)
+	ship_one(x+3*c,y+3*d) 	
 		
+def check(x,y):
+	if field[x-1][y-1] == 0 and field[x-1][y] == 0 and field[x-1][y+1] == 0 and field[x][y-1] == 0 and field[x][y] == 0 and field[x][y+1] == 0 and field[x+1][y-1] == 0 and field[x+1][y] == 0 and field[x+1][y+1] == 0:
+		a = 1
+	else:
+		a = 0
+	return a
+	
+def print_board():
+	for i in range(1,size-1):
+		for j in range(1,size-1):
+			if field[i][j] == 0:
+				print('□', end=' ')
+			elif field[i][j] == 1:
+				print('■', end=' ')	
+			elif field[i][j] == 2:
+				print('•', end=' ')		
+			else:
+				print('x', end=' ')			
+		print()	
+	print()					
+
+
 # 4 deck
 c = random.randint(0,1)
-d = random.randint(1,2)
-e = (-1)**d
 if c == 0:
-	a = random.randint(3,6)
-	b = random.randint(0,9)
-	for i in range(1,4):
-		field1[a+e*i].pop(b)
-		field1[a+e*i].insert(b,1)
+	a = random.randint(1,7)
+	b = random.randint(1,10)
+	ship_four(a,b,1,0)
 elif c == 1:
-	a = random.randint(0,9)
-	b = random.randint(3,6)
-	for i in range(1,4):
-		field1[a].pop(b+e*i)
-		field1[a].insert(b+e*i,1)	
-field1[a].pop(b)
-field1[a].insert(b, 1)	
-
+	a = random.randint(1,10)
+	b = random.randint(1,7)
+	ship_four(a,b,0,1)		
+		
 # 3 deck
 for i in range(2):
-	a = random.randint(0,7)
-	b = random.randint(0,7)	
+	test = 0
+	a = 0
+	b = 0
 	c = random.randint(0,1)
-	while field1[a][b] != 1:
+	while test != 1:
 		if c == 0: 
-			a = random.randint(0,7)
-			b = random.randint(0,9)	
-			if field1[a][b] == 0:
-				# крайние точки
-				if (b == 0 or b == 9) and a == 0 and field1[a+1][b] == 0 and field1[a+2][b] == 0 and field1[a+3][b] == 0 and field1[a][b+1-2*b//9] == 0 and field1[a+1][b+1-2*b//9] == 0 and field1[a+2][b+1-2*b//9] == 0 and field1[a+3][b+1-2*b//9] == 0:
-					ship_three(1,0)
-				elif (b == 0 or b == 9) and a == 7 and field1[a-1][b] == 0 and field1[a+1][b] == 0 and field1[a+2][b] == 0 and field1[a-1][b+1-2*b//9] == 0 and field1[a][b+1-2*b//9] == 0 and field1[a+1][b+1-2*b//9] == 0 and field1[a+2][b+1-2*b//9] == 0:
-					ship_three(1,0)
-				# края	
-				elif (a == 7 or a == 0) and b != 0 and b != 9 and field1[a][b-1] == 0 and field1[a+1][b-1] == 0 and field1[a+2][b-1] == 0 and field1[a+1][b] == 0 and field1[a+2][b] == 0 and field1[a][b+1] == 0 and field1[a+1][b+1] == 0 and field1[a+2][b+1] == 0 and field1[a+3-4*a//8][b-1] == 0 and field1[a+3-4*a//8][b] == 0 and field1[a+3-4*a//8][b+1] == 0:
-					ship_three(1,0)
-				elif (b == 0 or b == 9) and a != 0 and a != 9 and field1[a-1][b] == 0 and field1[a+1][b] == 0 and field1[a+2][b] == 0 and field1[a+3][b] == 0 and field1[a-1][b+1-2*b//9] == 0 and field1[a][b+1-2*b//9] == 0 and field1[a+1][b+1-2*b//9] == 0 and field1[a+2][b+1-2*b//9] == 0 and field1[a+3][b+1-2*b//9] == 0:
-					ship_three(1,0)
-				# другое
-				elif a != 0 and a != 8 and b != 9 and b != 0 and field1[a-1][b-1] == 0 and field1[a][b-1] == 0 and field1[a+1][b-1] == 0 and field1[a+2][b-1] == 0 and field1[a+3][b-1] == 0 and field1[a-1][b] == 0 and field1[a+1][b] == 0 and field1[a+2][b] == 0 and field1[a+3][b] == 0 and field1[a-1][b+1] == 0 and field1[a][b+1] == 0 and field1[a+1][b+1] == 0 and field1[a+2][b+1] == 0 and field1[a+3][b+1] == 0:
-					ship_two(1,0)
+			a = random.randint(1,8)
+			b = random.randint(1,10)	
+			if check(a,b) == 1 and check(a+1,b) == 1 and check(a+2,b) == 1:
+				ship_three(a,b,1,0)
+				test = 1
 		elif c == 1:
-			a = random.randint(0,9)
-			b = random.randint(0,7)	
-			if field1[a][b] == 0:
-				# крайние точки	
-				if (a == 0 or a == 9) and b == 0 and field1[a][b+1] == 0 and field1[a][b+2] == 0 and field1[a][b+3] == 0 and field1[a+1-2*a//9][b] == 0 and field1[a+1-2*a//9][b+1] == 0 and field1[a+1-2*a//9][b+2] == 0 and field1[a+1-2*a//9][b+3] == 0:
-					ship_two(0,1)
-				elif (a == 0 or a == 9) and b == 7 and field1[a][b-1] == 0 and field1[a][b+1] == 0 and field1[a][b+2] == 0 and field1[a+1-2*a//9][b-1] == 0 and field1[a+1-2*a//9][b] == 0 and field1[a+1-2*a//9][b+1] == 0 and field1[a+1-2*a//9][b+2] == 0:
-					ship_two(0,1)
-				# края	
-				elif (a == 9 or a == 0) and b != 0 and b != 7 and field1[a][b-1] == 0 and field1[a][b+1] == 0 and field1[a][b+2] == 0 and field1[a][b+3] == 0 and field1[a+1-2*a//9][b-1] == 0 and field1[a+1-2*a//9][b] == 0 and field1[a+1-2*a//9][b+1] == 0 and field1[a+1-2*a//9][b+2] == 0 and field1[a+1-2*a//9][b+3] == 0:
-					ship_two(0,1)
-				elif (b == 8 or b == 0) and a != 0 and a != 9 and field1[a-1][b] == 0 and field1[a+1][b] == 0 and field1[a-1][b+1] == 0 and field1[a][b+1] == 0 and field1[a+1][b+1] == 0 and field1[a-1][b+2] == 0 and field1[a][b+2] == 0 and field1[a+1][b+2] == 0 and field1[a-1][b+3-4*b//9] == 0 and field1[a][b+3-4*b//9] == 0 and field1[a+1][b+3-4*b//9] == 0:
-					ship_two(0,1)
-				# другое
-				elif a != 0 and a != 9 and b != 7 and b != 0 and field1[a-1][b-1] == 0 and field1[a-1][b] == 0 and field1[a-1][b+1] == 0 and field1[a-1][b+2] == 0 and field1[a-1][b+3] == 0 and field1[a][b-1] == 0 and field1[a][b+1] == 0 and field1[a][b+2] == 0 and field1[a][b+3] == 0 and field1[a+1][b-1] == 0 and field1[a+1][b] == 0 and field1[a+1][b+1] == 0 and field1[a+1][b+2] == 0 and field1[a+1][b+3] == 0:
-					ship_two(0,1)	
+			a = random.randint(1,10)
+			b = random.randint(1,8)	
+			if check(a,b) == 1 and check(a,b+1) == 1 and check(a,b+2) == 1:
+				ship_three(a,b,0,1)
+				test = 1
 
 # 2 deck
 for i in range(3):
-	a = random.randint(0,8)
-	b = random.randint(0,8)	
+	test = 0
+	a = 0
+	b = 0
 	c = random.randint(0,1)
-	while field1[a][b] != 1:
+	while test != 1:
 		if c == 0: 
-			a = random.randint(0,8)
-			b = random.randint(0,9)	
-			if field1[a][b] == 0:
-				# крайние точки
-				if (b == 0 or b == 9) and a == 0 and field1[a+1][b] == 0 and field1[a+2][b] == 0 and field1[a][b+1-2*b//9] == 0 and field1[a+1][b+1-2*b//9] == 0 and field1[a+2][b+1-2*b//9] == 0:
-					ship_two(1,0)
-				elif (b == 0 or b == 9) and a == 8 and field1[a-1][b] == 0 and field1[a+1][b] == 0 and field1[a-1][b+1-2*b//9] == 0 and field1[a][b+1-2*b//9] == 0 and field1[a+1][b+1-2*b//9] == 0:
-					ship_two(1,0)
-				# края	
-				elif (a == 8 or a == 0) and b != 0 and b != 9 and field1[a][b-1] == 0 and field1[a+1][b-1] == 0 and field1[a+1][b] == 0 and field1[a][b+1] == 0 and field1[a+1][b+1] == 0 and field1[a+2-3*a//8][b-1] == 0 and field1[a+2-3*a//8][b] == 0 and field1[a+2-3*a//8][b+1] == 0:
-					ship_two(1,0)
-				elif (b == 0 or b == 9) and a != 0 and a != 8 and field1[a-1][b] == 0 and field1[a+1][b] == 0 and field1[a+2][b] == 0 and field1[a-1][b+1-2*b//9] == 0 and field1[a][b+1-2*b//9] == 0 and field1[a+1][b+1-2*b//9] == 0 and field1[a+2][b+1-2*b//9] == 0:
-					ship_two(1,0)
-				# другое
-				elif a != 0 and a != 8 and b != 9 and b != 0 and field1[a-1][b-1] == 0 and field1[a][b-1] == 0 and field1[a+1][b-1] == 0 and field1[a+2][b-1] == 0 and field1[a-1][b] == 0 and field1[a+1][b] == 0 and field1[a+2][b] == 0 and field1[a-1][b+1] == 0 and field1[a][b+1] == 0 and field1[a+1][b+1] == 0 and field1[a+2][b+1] == 0:
-					ship_two(1,0)
+			a = random.randint(1,9)
+			b = random.randint(1,10)	
+			if check(a,b) == 1 and check(a+1,b) == 1:
+				ship_two(a,b,1,0)
+				test = 1
 		elif c == 1:
-			a = random.randint(0,9)
-			b = random.randint(0,8)	
-			if field1[a][b] == 0:
-				# крайние точки	
-				if (a == 0 or a == 9) and b == 0 and field1[a][b+1] == 0 and field1[a][b+2] == 0 and field1[a+1-2*a//9][b] == 0 and field1[a+1-2*a//9][b+1] == 0 and field1[a+1-2*a//9][b+2] == 0:
-					ship_two(0,1)
-				elif (a == 0 or a == 9) and b == 8 and field1[a][b-1] == 0 and field1[a][b+1] == 0 and field1[a+1-2*a//9][b-1] == 0 and field1[a+1-2*a//9][b] == 0 and field1[a+1-2*a//9][b+1] == 0:
-					ship_two(0,1)
-				# края	
-				elif (a == 9 or a == 0) and b != 0 and b != 8 and field1[a][b-1] == 0 and field1[a][b+1] == 0 and field1[a][b+2] == 0 and field1[a+1-2*a//9][b-1] == 0 and field1[a+1-2*a//9][b] == 0 and field1[a+1-2*a//9][b+1] == 0 and field1[a+1-2*a//9][b+2] == 0:
-					ship_two(0,1)
-				elif (b == 8 or b == 0) and a != 0 and a != 9 and field1[a-1][b] == 0 and field1[a+1][b] == 0 and field1[a-1][b+1] == 0 and field1[a][b+1] == 0 and field1[a+1][b+1] == 0 and field1[a-1][b+2-3*b//9] == 0 and field1[a][b+2-3*b//9] == 0 and field1[a+1][b+2-3*b//9] == 0:
-					ship_two(0,1)
-				# другое
-				elif a != 0 and a != 9 and b != 8 and b != 0 and field1[a-1][b-1] == 0 and field1[a-1][b] == 0 and field1[a-1][b+1] == 0 and field1[a-1][b+2] == 0 and field1[a][b-1] == 0 and field1[a][b+1] == 0 and field1[a][b+2] == 0 and field1[a+1][b-1] == 0 and field1[a+1][b] == 0 and field1[a+1][b+1] == 0 and field1[a+1][b+2] == 0:
-					ship_two(0,1)	
-						
+			a = random.randint(1,10)
+			b = random.randint(1,9)	
+			if check(a,b) == 1 and check(a,b+1) == 1:
+				ship_two(a,b,0,1)
+				test = 1
+
 # 1 deck
 for i in range(4):
-	a = random.randint(0,9)
-	b = random.randint(0,9)
-	while field1[a][b] != 1:
-		a = random.randint(0,9)
-		b = random.randint(0,9)
-		if field1[a][b] == 0:
-			if a != 0 and a != 9 and b != 0 and b != 9 and field1[a-1][b-1] == 0 and field1[a-1][b] == 0 and field1[a-1][b+1] == 0 and field1[a][b-1] == 0 and field1[a][b+1] == 0 and field1[a+1][b-1] and field1[a+1][b] == 0 and field1[a+1][b+1] == 0:
-				ship_one()	
-			# крайние точки 	
-			elif a == 0 and (b == 0 or b == 9) and field1[a+1][b] == 0 and field1[a][b+1-2*b//9] == 0 and field1[a+1][b+1-2*b//9] == 0:
-				ship_one()		
-			elif a == 9 and (b == 0 or b == 9) and field1[a-1][b] == 0 and field1[a][b+1-2*b//9] == 0 and field1[a-1][b+1-2*b//9] == 0:
-				ship_one()	
-			# края				
-			elif (a == 0 or a == 9) and b != 0 and b != 9 and field1[a][b-1] == 0 and field1[a][b+1] == 0 and field1[a+1-2*a//9][b+1] == 0 and field1[a+1-2*a//9][b] == 0 and field1[a+1-2*a//9][b-1] == 0:
-				ship_one()						
-			elif (b == 0 or b == 9) and a != 0 and a != 9 and field1[a-1][b] == 0 and field1[a+1][b] == 0 and field1[a-1][b+1-2*b//9] == 0 and field1[a][b+1-2*b//9] == 0 and field1[a+1][b+1-2*b//9] == 0:
-				ship_one()	
-											
+	test = 0
+	a = 0
+	b = 0
+	while test != 1:
+		a = random.randint(1,10)
+		b = random.randint(1,10)	
+		if check(a,b) == 1:
+			ship_one(a,b)
+			test = 1
+
 # check
-for i in range(size):
-	for j in range(size):
-		if field1[i][j] == 0:
+for i in range(1,size-1):
+	for j in range(1,size-1):
+		if field[i][j] == 0:
 			print('□', end=' ')
-		elif field1[i][j] == 1:
+		elif field[i][j] == 1:
 			print('■', end=' ')	
 		else:
 			print('x', end=' ')			
 	print()	
 print()
 
+a, b = map(int, input().split())
 
+if field[a][b] == 0:
+	field[a][b] = 2
+	print_board()
+elif field[a][b] == 1:
+	field[a][b] = 3	
+	print_board()
