@@ -1,16 +1,35 @@
 import random
 
-# field
+# необходимые значения
 size = 12
 field = []
-sum = 0
+shots = 0
+killed = 0
+n = 50
 
+# инструкция
+print('Привет!')
+print()
+print('Ты попал во всем известную с детства игру "Морской бой"! Правила просты: "выбей" 10 кораблей (один четырёхпалубный, два трёхпалубных, три двухпалубных и четыре однопалубных) – и ты победил. Но не забывай, что количество ходов ограничено – их всего 50. Так что следи за этим, иначе, увы, проиграешь. Но гарантирую, что тебе этого числа хватит сполна :)')
+print('Чтобы начать играть, введи координаты в формате буква (заглавная, кириллица)-пробел-число.')
+print()
+print('Вот некоторые обозначения, которые тебе могут встретиться:')
+print('□ – пустая клетка.')
+print('• – промах, совершённый этим ходом.')
+print('• – промах, совершённый несколько ходов назад.')
+print('✶ – "убитый" этим ходом корабль или его часть.')
+print('x – "убитый" несколько ходов назад корабль или его часть.')
+print()
+print('Удачи, игрок!')
+print()
+
+# поле
 for i in range(size):
 	field.append([])
 	for j in range(size):
 		field[i].append(0)		
 
-# function
+# полезные функции: установка кораблей
 def ship_one(x,y,z):
 	field[x].pop(y)
 	field[x].insert(y,z)	
@@ -33,21 +52,53 @@ def check(x,y):
 	else:
 		a = 0
 	return a
-	
+
+# полезные функции: проверка и вывод доски
 def print_board():
-	for i in range(1,size-1):
+	print(' ', end='  ')
+	letters = ['А','Б','В','Г','Д','Е','Ж','З','И','К']
+	for i in letters:
+		print(i, end=' ')	
+	print()
+	for i in range(1,size-2):
+		print(i, end='  ')
 		for j in range(1,size-1):
 			if field[i][j] == 5:
+				print('✶', end=' ')
+				field[i].pop(j)
+				field[i].insert(j,6)
+			elif field[i][j] == 6:
 				print('x', end=' ')	
 			elif field[i][j] == 10:
 				print('•', end=' ')		
 			else:
 				print('□', end=' ')				
-		print()	
-	print()					
+		print()
+	print(size-2, end=' ')
+	for j in range(1,size-1):
+		if field[i][j] == 5:
+			print('✶', end=' ')
+			field[i].pop(j)
+			field[i].insert(j,6)
+		elif field[i][j] == 6:
+			print('x', end=' ')	
+		elif field[i][j] == 10:
+			print('•', end=' ')		
+		else:
+			print('□', end=' ')						
+	print()			
+	print()			
+
+def shot(l):
+	global shots, killed
+	shots = shots + 1
+	field[s][t] = l
+	killed += 1
+	print()
+	print('Ты попал(а).')
 
 
-# 4 deck
+# установка 4-палубного корабля
 c = random.randint(0,1)
 if c == 0:
 	a = random.randint(1,7)
@@ -58,7 +109,7 @@ elif c == 1:
 	b = random.randint(1,7)
 	ship_four(a,b,4,0,1)		
 		
-# 3 deck
+# установка 3-палубных кораблей
 for i in range(2):
 	test = 0
 	a = 0
@@ -78,7 +129,7 @@ for i in range(2):
 				ship_three(a,b,3,0,1)
 				test = 1
 
-# 2 deck
+# установка 2-палубных кораблей
 for i in range(3):
 	test = 0
 	a = 0
@@ -98,7 +149,7 @@ for i in range(3):
 				ship_two(a,b,2,0,1)
 				test = 1
 
-# 1 deck
+# установка 1-палубных кораблей
 for i in range(4):
 	test = 0
 	a = 0
@@ -110,24 +161,42 @@ for i in range(4):
 			ship_one(a,b,1)
 			test = 1
 
-# check
+# проверка и вывод доски
 print_board()
-while a != 0:
-	s, t = map(int, input().split())
-	
+
+while killed != 20 or shots != n:
+	letters = ['А','Б','В','Г','Д','Е','Ж','З','И','К']
+	print('Координаты следующего выстрела:')
+	try:
+		t, s = input().split()
+		s = int(s)
+		t = int(letters.index(t)) + 1
+	except ValueError:
+		print('Ты что-то не то ввёл.')
+		print()
+		continue
 	if field[s][t] == 0:
+		shots = shots + 1
 		field[s][t] = 10
 	elif field[s][t] == 1:
-		field[s][t] = 5
-		print('Ты попал(а) в однопалубный корабль')
+		shot(5)
 	elif field[s][t] == 2:
-		field[s][t] = 5
-		print('Ты попал(а) в двухпалубный корабль')
+		shot(5)
 	elif field[s][t] == 3:
-		field[s][t] = 5
-		print('Ты попал(а) в трёхпалубный корабль')
+		shot(5)
 	elif field[s][t] == 4:
-		field[s][t] = 5
-		print('Ты попал(а) в четырёхпалубный корабль')	
-		
-	print_board()					
+		shot(5)
+	elif field[s][t] == 10:
+		print('Упс, сюда ты уже стрелял(а).')
+		print()
+	print()		
+	print_board()
+	print('Осталось ' + str(n-shots) + ' выстрелов из ' + str(n) + '.')
+	print('———————————————————————————')
+	print()
+	
+# конец игры	
+if shots == n and killed != 20:
+	print('Ты проиграл(а).')
+elif int(killed) == 20:
+	print('Ты выиграл(а)!')
