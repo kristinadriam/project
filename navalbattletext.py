@@ -80,6 +80,7 @@ def print_board():
 		print()
 	print(size-2, end=' ')
 	for j in range(1,size-1):
+		i = 10
 		if field[i][j] == 5:
 			print('✶', end=' ')
 			field[i].pop(j)
