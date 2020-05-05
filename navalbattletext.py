@@ -68,7 +68,11 @@ def print_board():
 				field[i].pop(j)
 				field[i].insert(j,6)
 			elif field[i][j] == 6:
-				print('x', end=' ')	
+				print('x', end=' ')
+			elif field[i][j] == 11:
+				print('◎', end=' ')
+				field[i].pop(j)
+				field[i].insert(j,10)
 			elif field[i][j] == 10:
 				print('•', end=' ')		
 			else:
@@ -81,11 +85,15 @@ def print_board():
 			field[i].pop(j)
 			field[i].insert(j,6)
 		elif field[i][j] == 6:
-			print('x', end=' ')	
+			print('x', end=' ')
+		elif field[i][j] == 11:
+			print('◎', end=' ')
+			field[i].pop(j)
+			field[i].insert(j,10)
 		elif field[i][j] == 10:
 			print('•', end=' ')		
 		else:
-			print('□', end=' ')						
+			print('□', end=' ')							
 	print()			
 	print()			
 
@@ -177,7 +185,7 @@ while killed != 20 or shots != n:
 		continue
 	if field[s][t] == 0:
 		shots = shots + 1
-		field[s][t] = 10
+		field[s][t] = 11
 	elif field[s][t] == 1:
 		shot(5)
 	elif field[s][t] == 2:
@@ -186,7 +194,7 @@ while killed != 20 or shots != n:
 		shot(5)
 	elif field[s][t] == 4:
 		shot(5)
-	elif field[s][t] == 10:
+	else:
 		print('Упс, сюда ты уже стрелял(а).')
 		print()
 	print()		
