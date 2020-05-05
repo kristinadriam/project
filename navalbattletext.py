@@ -37,14 +37,12 @@ def check(x,y):
 def print_board():
 	for i in range(1,size-1):
 		for j in range(1,size-1):
-			if field[i][j] == 0:
-				print('□', end=' ')	
-			elif field[i][j] == 5:
+			if field[i][j] == 5:
 				print('x', end=' ')	
 			elif field[i][j] == 10:
 				print('•', end=' ')		
 			else:
-				print('■', end=' ')				
+				print('□', end=' ')				
 		print()	
 	print()					
 
@@ -114,25 +112,22 @@ for i in range(4):
 
 # check
 print_board()
-
-s, t = map(int, input().split())
-
-if field[s][t] == 0:
-	field[s][t] = 10
-	print_board()
-elif field[s][t] == 1:
-	field[s][t] = 5
-	print_board()
-	print('Ты попал(а) в однопалубный корабль')
-elif field[s][t] == 2:
-	field[s][t] = 5
-	print_board()
-	print('Ты попал(а) в двухпалубный корабль')
-elif field[s][t] == 3:
-	field[s][t] = 5
-	print_board()
-	print('Ты попал(а) в трёхпалубный корабль')
-elif field[s][t] == 4:
-	field[s][t] = 5
-	print_board()
-	print('Ты попал(а) в четырёхпалубный корабль')			
+while a != 0:
+	s, t = map(int, input().split())
+	
+	if field[s][t] == 0:
+		field[s][t] = 10
+	elif field[s][t] == 1:
+		field[s][t] = 5
+		print('Ты попал(а) в однопалубный корабль')
+	elif field[s][t] == 2:
+		field[s][t] = 5
+		print('Ты попал(а) в двухпалубный корабль')
+	elif field[s][t] == 3:
+		field[s][t] = 5
+		print('Ты попал(а) в трёхпалубный корабль')
+	elif field[s][t] == 4:
+		field[s][t] = 5
+		print('Ты попал(а) в четырёхпалубный корабль')	
+		
+	print_board()					
