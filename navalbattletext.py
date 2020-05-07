@@ -5,7 +5,7 @@ size = 12
 field = []
 shots = 0
 killed = 0
-n = 10
+n = 50
 
 # инструкция
 print('Привет!')
@@ -55,6 +55,13 @@ def check(x,y):
 	else:
 		a = 0
 	return a
+	
+def print_shot():
+	print()		
+	print_board()
+	print('Осталось ' + str(n-shots) + ' выстрелов из ' + str(n) + '.')
+	print('———————————————————————————')
+	print()
 
 # полезные функции: проверка и вывод доски
 def print_board():
@@ -180,9 +187,15 @@ while killed != 20 or shots != n:
 	letters = ['А','Б','В','Г','Д','Е','Ж','З','И','К']
 	print('Координаты следующего выстрела:')
 	try:
-		t, s = input().split()
-		s = int(s)
-		t = int(letters.index(t)) + 1
+		s = 0
+		while not 1 <= s <= 10: 
+			t, s = input().split()
+			s = int(s)
+			t = int(letters.index(t)) + 1
+			if s < 1 or s > 10:
+				print('Ты что-то не то ввёл.')
+				print()
+				print('Координаты следующего выстрела:')
 	except ValueError:
 		print('Ты что-то не то ввёл.')
 		print()
@@ -190,22 +203,22 @@ while killed != 20 or shots != n:
 	if field[s][t] == 0:
 		shots = shots + 1
 		field[s][t] = 11
+		print_shot()
 	elif field[s][t] == 1:
 		shot(5)
+		print_shot()
 	elif field[s][t] == 2:
 		shot(5)
+		print_shot()
 	elif field[s][t] == 3:
 		shot(5)
+		print_shot()
 	elif field[s][t] == 4:
 		shot(5)
+		print_shot()
 	else:
 		print('Упс, сюда ты уже стрелял(а).')
 		print()
-	print()		
-	print_board()
-	print('Осталось ' + str(n-shots) + ' выстрелов из ' + str(n) + '.')
-	print('———————————————————————————')
-	print()
 	# конец игры	
 	if shots == n and killed != 20:
 		print('Ты проиграл(а).')
