@@ -7,6 +7,11 @@ shots = 0
 killed = 0
 n = 50
 
+#Выносим в отдельное место все те символы, что используются для рисования
+# проще поменять символ и не нужно помнить где какой
+#пример
+DEAD_SHIP = 'x'
+
 # инструкция
 print('Привет!')
 print()
@@ -21,9 +26,15 @@ print('□ – пустая клетка.')
 print('◎ – промах, совершённый этим ходом.')
 print('• – промах, совершённый несколько ходов назад.')
 print('✶ – "убитый" этим ходом корабль или его часть.')
-print('x – "убитый" несколько ходов назад корабль или его часть.')
+print(DEAD_SHIP, '– "убитый" несколько ходов назад корабль или его часть.')
 print()
 print('Удачи, игрок!')
+
+
+#можно подкрашивать текст, например место взрыва, ибо так веселее!
+print("\033[31m {}" .format("красненький текст"))
+print("печатаем что-то")
+print("\033[30m {}" .format("а тут он обратно черным стал"))
 print()
 
 # поле
@@ -78,7 +89,7 @@ def print_board():
 				field[i].pop(j)
 				field[i].insert(j,6)
 			elif field[i][j] == 6:
-				print('x', end=' ')
+				print(DEAD_SHIP, end=' ')
 			elif field[i][j] == 11:
 				print('◎', end=' ')
 				field[i].pop(j)
@@ -96,7 +107,7 @@ def print_board():
 			field[i].pop(j)
 			field[i].insert(j,6)
 		elif field[i][j] == 6:
-			print('x', end=' ')
+			print(DEAD_SHIP, end=' ')
 		elif field[i][j] == 11:
 			print('◎', end=' ')
 			field[i].pop(j)
@@ -107,6 +118,7 @@ def print_board():
 			print('□', end=' ')							
 	print()			
 	print()			
+
 
 def shot(l):
 	global shots, killed
@@ -119,6 +131,7 @@ def shot(l):
 
 # установка 4-палубного корабля
 c = random.randint(0,1)
+
 if c == 0:
 	a = random.randint(1,7)
 	b = random.randint(1,10)
@@ -200,6 +213,7 @@ while killed != 20 or shots != n:
 		print('Ты что-то не то ввёл.')
 		print()
 		continue
+
 	if field[s][t] == 0:
 		shots = shots + 1
 		field[s][t] = 11
